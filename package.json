@@ -1,0 +1,25 @@
+{
+  "name": "web2driver",
+  "version": "1.0.0",
+  "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/projectxyzio/web2driver.git"
+  },
+  "keywords": [
+    "Appium",
+    "Selenium",
+    "WebDriver",
+    "Testing"
+  ],
+  "author": "Jonathan Lipps <jlipps@headspin.io>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/projectxyzio/web2driver/issues"
+  },
+  "homepage": "https://github.com/projectxyzio/web2driver#readme"
+}
