@@ -4,7 +4,9 @@
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "build": "webpack",
+    "test-server": "webpack-dev-server 'mocha-loader!./test/index.js' --hot --inline -o ./dist/test.js",
+    "test-open": "open http://localhost:8080/test"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,15 @@
   "bugs": {
     "url": "https://github.com/projectxyzio/web2driver/issues"
   },
-  "homepage": "https://github.com/projectxyzio/web2driver#readme"
+  "homepage": "https://github.com/projectxyzio/web2driver#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "mocha-loader": "^2.0.0",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9"
+  },
+  "dependencies": {
+    "webdriver": "next"
+  }
 }
