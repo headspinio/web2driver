@@ -1,4 +1,3 @@
-import WDCore from 'webdriver';
+import Web2Driver from './driver';
 
-export default class Web2Driver {
-}
+export default Web2Driver;

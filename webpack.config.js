@@ -1,10 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-let plugins = [];
-
-plugins.push(
-  new webpack.IgnorePlugin(/source-map-support/)
-);
 
 module.exports = {
   entry: './src/index.js',
@@ -17,5 +12,4 @@ module.exports = {
     net: "empty",
     tls: "empty",
   },
-  plugins
 };
