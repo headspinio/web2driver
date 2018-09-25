@@ -1,4 +1,8 @@
 import Web2Driver from '../src';
+import chai from 'chai';
+import should from 'should';
+
+chai.use(should);
 
 const MOCHA_TIMEOUT = 60000;
 
@@ -14,15 +18,22 @@ const CAPS = {
 mocha.setup({timeout: MOCHA_TIMEOUT});
 
 describe('Web2Driver', function () {
-  it('should exist', function () {
-    new Web2Driver();
-  });
 
-  it('should start and stop a session', async function () {
-    const driver = await Web2Driver.remote({
+  let driver;
+
+  before(async function () {
+    driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
     }, CAPS);
+  });
+
+  after(async function () {
     await driver.quit();
+  });
+
+  it('should be able to use mjsonwp commands', async function () {
+    const ctxs = await driver.getContexts();
+    ctxs.length.should.eql(2);
   });
 });
