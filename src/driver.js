@@ -15,5 +15,4 @@ export default class Web2Driver {
     let sessionClient = await WDCore.newSession(params);
     return new Session(sessionClient);
   }
-
 }

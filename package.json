@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack",
-    "build-test": "rm -rf ./dist/test.js && webpack 'mocha-loader!./test/index.js' -o ./dist/test.js",
-    "test-server": "npm run build-test && webpack-dev-server",
-    "test-open": "open http://localhost:8080/test"
+    "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
+    "test-server": "npm run build-test && webpack-dev-server --config webpack.config.test.js",
+    "test-open": "open http://localhost:8081/test"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "webpack-dev-server": "^3.1.9"
   },
   "dependencies": {
+    "lodash": "^4.17.11",
     "webdriver": "next"
   }
 }
