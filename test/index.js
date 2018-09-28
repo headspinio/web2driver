@@ -7,7 +7,7 @@ chai.use(should);
 const MOCHA_TIMEOUT = 60000;
 
 const SERVER = "127.0.0.1";
-const PORT = 4444;
+const PORT = 4723;
 const CAPS = {
   platformName: "iOS",
   platformVersion: "11.4",
