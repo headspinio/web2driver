@@ -20,8 +20,10 @@ async function automation() {
     // we could also specify 'protocol' and 'path', which default to
     // 'http' and '/wd/hub' respectively
 
+    const capabilities = {browserName: "Safari"}; //...
+
     // initialize a session
-    const driver = await Web2Driver.remote(serverOpts);
+    const driver = await Web2Driver.remote(serverOpts, capabilities);
 
     // do stuff with a session
     const el = await driver.findElement('xpath', '//foo');
