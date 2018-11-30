@@ -2,7 +2,7 @@
   "name": "web2driver",
   "version": "1.0.0",
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "webpack",
     "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
