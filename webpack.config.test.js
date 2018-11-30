@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './test/index.js',
+  entry: ['@babel/polyfill', './test/index.js'],
   output: {
     filename: 'test.js',
     path: path.resolve(__dirname, 'dist')
@@ -19,7 +19,17 @@ module.exports = {
         test: /test.*\.js$/,
         use: 'mocha-loader',
         exclude: /node_modules/
+      },
+      {
+      test: /.m?js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        }
       }
+    }
     ]
   }
 };
