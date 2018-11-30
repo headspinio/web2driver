@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: ['@babel/polyfill', './test/index.js'],
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
