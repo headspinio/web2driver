@@ -30,7 +30,7 @@ describe('Web2Driver', function () {
       port: PORT,
     }, CAPS);
 
-    await driver.navigateTo("http://localhost:8081/test/fixture.html");
+    await driver.navigateTo("http://localhost:8080/test/fixture.html");
   });
 
   after(async function () {
