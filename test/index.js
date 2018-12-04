@@ -41,6 +41,11 @@ describe('Web2Driver', function () {
     driver.sessionId.should.be.a.string;
   });
 
+  it('should have capabilities from the session', function () {
+    driver.capabilities.should.be.a.object;
+    driver.capabilities.platformName.should.eql('iOS');
+  });
+
   it('should be able to use jsonwp commands', async function () {
     should.exist((await driver.status()).build);
     should.exist(await driver.getSession());

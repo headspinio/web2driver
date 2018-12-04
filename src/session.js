@@ -15,6 +15,10 @@ export default class Session {
     return this.client.sessionId;
   }
 
+  get capabilities () {
+    return this.client.capabilities;
+  }
+
   async findElement (using, value) {
     const res = await this.client.findElement(using, value);
     return getElementFromResponse(res, this);
