@@ -7,7 +7,8 @@
     "build": "webpack",
     "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
     "test-server": "npm run build-test && webpack-dev-server --config webpack.config.test.js",
-    "test-open": "open http://localhost:8080/test"
+    "test-open": "open http://localhost:8080/test",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
