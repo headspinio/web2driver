@@ -46,7 +46,8 @@ describe('Web2Driver', function () {
     driver.capabilities.platformName.should.eql('iOS');
   });
 
-  it('should be able to use jsonwp commands', async function () {
+  it.skip('should be able to use jsonwp commands', async function () {
+    // TODO jsonwp commands don't work (obv) in w3c sessions
     should.exist((await driver.status()).build);
     should.exist(await driver.getSession());
     await driver.setImplicitTimeout(1000);
@@ -73,7 +74,8 @@ describe('Web2Driver', function () {
     (await el2.getText()).should.eql('This is an inner div');
   });
 
-  it('should be able to find multiple elements from an element', async function () {
+  it.skip('should be able to find multiple elements from an element', async function () {
+    // TODO this is broken for appium at the moment. https://github.com/appium/appium/issues/11806
     const el = await driver.findElement('id', 'outerDiv');
     const ps = await el.findElements('tag name', 'p');
     const validTexts = ['This is an outer div', 'This is an inner div'];
@@ -87,5 +89,20 @@ describe('Web2Driver', function () {
     const p = await el.findElement('tag name', 'p');
     const res = await driver.executeScript("return arguments[0].innerHTML;", [p]);
     res.should.eql('This is an inner div');
+  });
+
+  it('should be able to run w3c actions', async function () {
+    const ctx = await driver.getContext();
+    await driver.performActions([{
+      type: 'pointer',
+      id: 'finger1',
+      parameters: {pointerType: 'touch'},
+      actions: [
+        {type: 'pointerMove', duration: 0, x: 100, y: 100},
+        {type: 'pointerDown', button: 0},
+        {type: 'pause', duration: 200},
+        {type: 'pointerUp', button: 0},
+      ]
+    }]);
   });
 });
