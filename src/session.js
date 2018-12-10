@@ -28,6 +28,24 @@ export default class Session {
     const ress = await this.client.findElements(using, value);
     return ress.map(res => getElementFromResponse(res, this));
   }
+
+  async executeBase (cmd, script, args) {
+    args = args.map((a) => {
+      if (a.__is_w2d_element) {
+        return a.executeObj;
+      }
+      return a;
+    });
+    return await this.client[cmd](script, args);
+  }
+
+  async executeScript (script, args) {
+    return await this.executeBase('executeScript', script, args);
+  }
+
+  async executeAsyncScript (script, args) {
+    return await this.executeBase('executeAsyncScript', script, args);
+  }
 }
 
 const AVOID_CMDS = [
@@ -36,6 +54,8 @@ const AVOID_CMDS = [
   "findElements",
   "findElementFromElement",
   "findElementsFromElement",
+  "executeScript",
+  "executeAsyncScript",
 ];
 
 const ALIAS_CMDS = {

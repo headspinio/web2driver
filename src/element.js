@@ -5,8 +5,14 @@ const JWP_ELEMENT_KEY = 'ELEMENT';
 
 export default class UIElement {
   constructor (elementKey, findRes, parent) {
+    this.elementKey = elementKey;
     this.elementId = this[elementKey] = findRes[elementKey];
     this.client = parent.client;
+    this.__is_w2d_element = true;
+  }
+
+  get executeObj () {
+    return {[this.elementKey]: this.elementId};
   }
 
   async findElement (using, value) {
@@ -19,6 +25,7 @@ export default class UIElement {
     return ress.map(res => getElementFromResponse(res, this));
   }
 }
+
 
 function getElementFromResponse (res, parent) {
   let elementKey;
