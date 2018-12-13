@@ -12,13 +12,6 @@ export default class Web2Driver {
   },
     capabilities = {}
   ) {
-    // force w3c style caps until wdio does this more elegantly
-    if (!capabilities.alwaysMatch) {
-      capabilities = {
-        alwaysMatch: cloneDeep(capabilities),
-        firstMatch: [{}],
-      };
-    }
     const params = {protocol, hostname, port, path, capabilities};
     let sessionClient = await WDCore.newSession(params);
     return new Session(sessionClient);

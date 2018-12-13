@@ -46,11 +46,8 @@ describe('Web2Driver', function () {
     driver.capabilities.platformName.should.eql('iOS');
   });
 
-  it.skip('should be able to use jsonwp commands', async function () {
-    // TODO jsonwp commands don't work (obv) in w3c sessions
-    should.exist((await driver.status()).build);
-    should.exist(await driver.getSession());
-    await driver.setImplicitTimeout(1000);
+  it('should not be able to use jsonwp commands', async function () {
+    should.not.exist(driver.setImplicitWaitTimeout);
   });
 
   it('should be able to use mjsonwp commands', async function () {
@@ -74,8 +71,7 @@ describe('Web2Driver', function () {
     (await el2.getText()).should.eql('This is an inner div');
   });
 
-  it.skip('should be able to find multiple elements from an element', async function () {
-    // TODO this is broken for appium at the moment. https://github.com/appium/appium/issues/11806
+  it('should be able to find multiple elements from an element', async function () {
     const el = await driver.findElement('id', 'outerDiv');
     const ps = await el.findElements('tag name', 'p');
     const validTexts = ['This is an outer div', 'This is an inner div'];
@@ -92,7 +88,6 @@ describe('Web2Driver', function () {
   });
 
   it('should be able to run w3c actions', async function () {
-    const ctx = await driver.getContext();
     await driver.performActions([{
       type: 'pointer',
       id: 'finger1',
@@ -104,5 +99,21 @@ describe('Web2Driver', function () {
         {type: 'pointerUp', button: 0},
       ]
     }]);
+  });
+
+  it('should be able to send keys', async function () {
+    const ctx = await driver.getContext();
+    await driver.switchContext('NATIVE_APP');
+    try {
+      let el = await driver.findElement('accessibility id', 'URL');
+      await el.click();
+      console.log(await driver.getPageSource());
+      el = await driver.findElement('accessibility id', 'URL');
+      (await el.getText()).should.not.eql('foo');
+      await el.sendKeys("foo");
+      (await el.getText()).should.eql('foo');
+    } finally {
+      await driver.switchContext(ctx);
+    }
   });
 });

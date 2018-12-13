@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack",
     "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
+    "clean": "rm -rf ./dist/*.js && rm -rf package-lock.json && rm -rf node_modules && npm install",
     "test-server": "npm run build-test && webpack-dev-server --config webpack.config.test.js",
     "test-open": "open http://localhost:8080/test",
     "prepublish": "npm run build"
@@ -43,6 +44,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "webdriver": "next"
+    "webdriver": "^5.0.0-beta.13"
   }
 }

@@ -1,35 +1,21 @@
 const webpack = require('webpack');
+const _ = require('lodash');
 const path = require('path');
+const base = require('./webpack.config.base');
 
-module.exports = {
-  mode: 'development',
-  entry: ['@babel/polyfill', './test/index.js'],
-  output: {
-    filename: 'test.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  node: {
-    fs: "empty",
-    net: "empty",
-    tls: "empty",
-  },
-  module: {
-    rules: [
-      {
-        test: /test.*\.js$/,
-        use: 'mocha-loader',
-        exclude: /node_modules/
-      },
-      {
-      test: /.m?js$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-        }
-      }
-    }
-    ]
-  }
+const testConfig = _.cloneDeep(base);
+
+testConfig.entry[testConfig.entry.length - 1] = './test/index.js';
+testConfig.mode = 'development';
+testConfig.devtool = 'inline-source-map';
+testConfig.output = {
+  filename: 'test.js',
+  path: path.resolve(__dirname, 'dist')
 };
+testConfig.module.rules.unshift({
+  test: /test.*\.js$/,
+  use: 'mocha-loader',
+  exclude: /node_modules/
+});
+
+module.exports = testConfig;
