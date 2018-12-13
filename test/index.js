@@ -107,7 +107,6 @@ describe('Web2Driver', function () {
     try {
       let el = await driver.findElement('accessibility id', 'URL');
       await el.click();
-      console.log(await driver.getPageSource());
       el = await driver.findElement('accessibility id', 'URL');
       (await el.getText()).should.not.eql('foo');
       await el.sendKeys("foo");
