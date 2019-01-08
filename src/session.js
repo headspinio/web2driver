@@ -16,7 +16,7 @@ export default class Session {
   }
 
   get capabilities () {
-    return this.client.capabilities;
+    return this.client.options.capabilities;
   }
 
   async findElement (using, value) {

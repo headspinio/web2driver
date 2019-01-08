@@ -44,6 +44,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "webdriver": "^5.0.0-beta.13"
+    "webdriver": "^5.2.5"
   }
 }
