@@ -10,6 +10,9 @@ module.exports = {
   resolve: {
     symlinks: false,
   },
+  optimization: {
+    minimize: false,
+  },
   node: {
     fs: "empty",
     net: "empty",
