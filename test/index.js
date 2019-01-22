@@ -115,4 +115,18 @@ describe('Web2Driver', function () {
       await driver.switchContext(ctx);
     }
   });
+
+  it('should respect implicit wait timeout', async function () {
+    let start = Date.now();
+    try {
+      await driver.findElement('id', 'doesnotexist');
+    } catch (ign) {}
+    (Date.now() - start).should.be.below(1000);
+    await driver.setTimeouts(2000);
+    start = Date.now();
+    try {
+      await driver.findElement('id', 'doesnotexist');
+    } catch (ign) {}
+    (Date.now() - start).should.be.above(2000);
+  });
 });
