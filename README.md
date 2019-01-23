@@ -35,9 +35,46 @@ async function automation() {
 }
 ```
 
-## API
+## Core API
 
 TBD. Web2Driver uses the WebDriverIO's [base protocol layer](https://github.com/webdriverio/webdriverio/blob/master/packages/webdriver/protocol) basically without change, so command names are the same as are listed in the various available protocols.
+
+## Additional Features
+
+### Direct Connect URLs
+
+If your Selenium/Appium server decorates the new session capabilities response with the following keys:
+
+* `directConnectProtocol`
+* `directConnectHost`
+* `directConnectPort`
+* `directConnectPath`
+
+Then web2driver will switch its endpoint to the one specified by the values of those keys. This is useful for load-balanced servers to be a single point of entry for starting sessions, but to reply with more detailed information that allows web2driver to speak directly to the host running the session.
+
+### Attach to Session
+
+If you have an existing session ID corresponding to a session running on a host, you can attach to it:
+
+```js
+import Web2Driver from 'web2driver';
+
+async function automation() {
+    const serverOpts = {hostname: "localhost", port: 4723}; // same opts as in the basic example
+    const sessionId = "1234567890134"; // we would get this externally somehow
+
+    // attach to a session
+    const driver = await Web2Driver.attachToSession(sessionId, serverOpts);
+
+    // now we can do stuff with the session
+
+    // we could also pass in whether or not the session is or isn't W3C (default is true):
+    const driver = await Web2Driver.attachToSession(sessionId, serverOpts, false);
+
+    // we could also pass in capabilities to store them on the session
+    const driver = await Web2Driver.attachToSession(sessionId, serverOpts, false, {browserName: 'foo'});
+}
+```
 
 ## Dev / Test
 
