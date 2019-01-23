@@ -129,4 +129,55 @@ describe('Web2Driver', function () {
     } catch (ign) {}
     (Date.now() - start).should.be.above(2000);
   });
+
+});
+
+describe('Web2Driver - Direct Connect', function () {
+
+  let driver = null;
+
+  before(function () {
+    this.timeout(INIT_TIMEOUT);
+  });
+
+  it('should attempt to use new connection details in response capabilities - failure scenario', async function () {
+    driver = await Web2Driver.remote({
+      hostname: SERVER,
+      port: PORT,
+    }, Object.assign({}, CAPS, {
+      'appium:directConnectProtocol': 'http',
+      'appium:directConnectHost': SERVER,
+      'appium:directConnectPort': PORT + 1,
+      'appium:directConnectPath': '/wd/hub',
+    }));
+
+    let err;
+    try {
+      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    } catch (e) {
+      err = e;
+    }
+    err.should.match(/XHR error/);
+  });
+
+  it('should attempt to use new connection details in response capabilities - success scenario', async function () {
+    driver = await Web2Driver.remote({
+      hostname: SERVER,
+      port: PORT,
+    }, Object.assign({}, CAPS, {
+      'appium:directConnectProtocol': 'http',
+      'appium:directConnectHost': SERVER,
+      'appium:directConnectPort': PORT,
+      'appium:directConnectPath': '/wd/hub',
+    }));
+
+    await driver.navigateTo("http://localhost:8080/test/fixture.html");
+  });
+
+  after(async function () {
+    if (driver) {
+      driver.client.options.port = PORT; // fix things so we can quit
+      await driver.quit();
+    }
+  });
 });
