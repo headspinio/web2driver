@@ -16,6 +16,8 @@ const CAPS = {
   browserName: "Safari"
 };
 
+const TEST_URL = "http://localhost:8080/test/fixture.html";
+
 mocha.setup({timeout: MOCHA_TIMEOUT});
 
 describe('Web2Driver', function () {
@@ -30,7 +32,7 @@ describe('Web2Driver', function () {
       port: PORT,
     }, CAPS);
 
-    await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    await driver.navigateTo(TEST_URL);
   });
 
   after(async function () {
@@ -128,6 +130,14 @@ describe('Web2Driver', function () {
       await driver.findElement('id', 'doesnotexist');
     } catch (ign) {}
     (Date.now() - start).should.be.above(2000);
+  });
+
+  it('should be able to attach to an existing session', async function () {
+    const driver2 = await Web2Driver.attachToSession(driver.sessionId, {
+      hostname: SERVER,
+      port: PORT,
+    });
+    (await driver2.getUrl()).should.eql(TEST_URL);
   });
 
 });

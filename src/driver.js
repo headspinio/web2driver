@@ -2,18 +2,39 @@ import WDCore from 'webdriver';
 import Session from './session';
 import { cloneDeep } from 'lodash';
 
+const DEFAULTS = {
+  protocol: "http",
+  hostname: "0.0.0.0",
+  port: 4444,
+  path: "/wd/hub",
+};
+
 export default class Web2Driver {
 
   static async remote ({
-    protocol = "http",
-    hostname = "0.0.0.0",
-    port = 4444,
-    path = "/wd/hub",
+    protocol = DEFAULTS.protocol,
+    hostname = DEFAULTS.hostname,
+    port = DEFAULTS.port,
+    path = DEFAULTS.path,
   },
     capabilities = {}
   ) {
     const params = {protocol, hostname, port, path, capabilities};
-    let sessionClient = await WDCore.newSession(params);
+    const sessionClient = await WDCore.newSession(params);
+    return new Session(sessionClient);
+  }
+
+  static async attachToSession (sessionId, {
+    protocol = DEFAULTS.protocol,
+    hostname = DEFAULTS.hostname,
+    port = DEFAULTS.port,
+    path = DEFAULTS.path,
+  }, capabilities = {}, isW3C = true) {
+    if (!sessionId) {
+      throw new Error("Can't attach to a session without a session id");
+    }
+    const params = {sessionId, isW3C, protocol, hostname, port, path, capabilities};
+    const sessionClient = await WDCore.attachToSession(params);
     return new Session(sessionClient);
   }
 }
