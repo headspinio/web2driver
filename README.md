@@ -76,6 +76,22 @@ async function automation() {
 }
 ```
 
+### Other Webdriver Params
+
+Since web2driver is based on [WebdriverIO's core library](https://github.com/webdriverio/webdriverio/tree/master/packages/webdriver), many [WebdriverIO options](https://webdriver.io/docs/options.html) also work with web2driver (for example, you could set `connectionRetryCount` to `0` to disable connection retries):
+
+```js
+import Web2Driver from 'web2driver';
+
+async function automation() {
+    const serverOpts = {hostname: "localhost", port: 4723, connectionRetryCount: 0};
+    const capabilities = {browserName: "Safari"}; //...
+
+    // initialize a session
+    const driver = await Web2Driver.remote(serverOpts, capabilities);
+}
+```
+
 ## Dev / Test
 
 ```bash

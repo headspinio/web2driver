@@ -16,10 +16,11 @@ export default class Web2Driver {
     hostname = DEFAULTS.hostname,
     port = DEFAULTS.port,
     path = DEFAULTS.path,
+    ...otherParams
   },
     capabilities = {}
   ) {
-    const params = {protocol, hostname, port, path, capabilities};
+    const params = {protocol, hostname, port, path, capabilities, ...otherParams};
     const sessionClient = await WDCore.newSession(params);
     return new Session(sessionClient);
   }
@@ -29,11 +30,12 @@ export default class Web2Driver {
     hostname = DEFAULTS.hostname,
     port = DEFAULTS.port,
     path = DEFAULTS.path,
+    ...otherParams
   }, capabilities = {}, isW3C = true) {
     if (!sessionId) {
       throw new Error("Can't attach to a session without a session id");
     }
-    const params = {sessionId, isW3C, protocol, hostname, port, path, capabilities};
+    const params = {sessionId, isW3C, protocol, hostname, port, path, capabilities, ...otherParams};
     const sessionClient = await WDCore.attachToSession(params);
     return new Session(sessionClient);
   }
