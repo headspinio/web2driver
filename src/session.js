@@ -46,10 +46,15 @@ export default class Session {
         `appium:${DIRECT_CONNECT_PREFIX}` :
         DIRECT_CONNECT_PREFIX;
       this.client.options.protocol = receivedCaps[`${prefix}Protocol`];
-      this.client.options.host = receivedCaps[`${prefix}Host`];
+      this.client.options.hostname = receivedCaps[`${prefix}Host`];
       this.client.options.port = receivedCaps[`${prefix}Port`];
       this.client.options.path = receivedCaps[`${prefix}Path`];
     }
+  }
+
+  get connectedUrl () {
+    const {protocol, hostname, port, path} = this.client.options;
+    return `${protocol}://${hostname}:${port}${path}`;
   }
 
   get sessionId () {

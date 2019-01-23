@@ -93,7 +93,7 @@ describe('Web2Driver', function () {
       id: 'finger1',
       parameters: {pointerType: 'touch'},
       actions: [
-        {type: 'pointerMove', duration: 0, x: 100, y: 100},
+        {type: 'pointerMove', duration: 0, x: 500, y: 500},
         {type: 'pointerDown', button: 0},
         {type: 'pause', duration: 200},
         {type: 'pointerUp', button: 0},
@@ -105,9 +105,9 @@ describe('Web2Driver', function () {
     const ctx = await driver.getContext();
     await driver.switchContext('NATIVE_APP');
     try {
-      let el = await driver.findElement('accessibility id', 'URL');
+      let el = await driver.findElement('accessibility id', 'Address');
       await el.click();
-      el = await driver.findElement('accessibility id', 'URL');
+      el = await driver.findElement('accessibility id', 'Address');
       (await el.getText()).should.not.eql('foo');
       await el.sendKeys("foo");
       (await el.getText()).should.eql('foo');
@@ -147,8 +147,8 @@ describe('Web2Driver - Direct Connect', function () {
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
-      'appium:directConnectPort': PORT + 1,
-      'appium:directConnectPath': '/wd/hub',
+      'appium:directConnectPort': 4724,
+      'appium:directConnectPath': '/w2d/hub',
     }));
 
     let err;
@@ -157,7 +157,41 @@ describe('Web2Driver - Direct Connect', function () {
     } catch (e) {
       err = e;
     }
+    driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
     err.should.match(/XHR error/);
+  });
+
+  it('should attempt to use new connection details in response capabilities - unprefixed caps', async function () {
+    driver = await Web2Driver.remote({
+      hostname: SERVER,
+      port: PORT,
+    }, Object.assign({}, CAPS, {
+      'appium:directConnectProtocol': 'http',
+      'appium:directConnectHost': SERVER,
+      'appium:directConnectPort': 4724,
+      'appium:directConnectPath': '/w2d/hub',
+    }));
+
+    let err;
+    try {
+      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    } catch (e) {
+      err = e;
+    }
+    driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
+    err.should.match(/XHR error/);
+  });
+
+  it('should not use direct connection caps if they are not all present', async function () {
+    driver = await Web2Driver.remote({
+      hostname: SERVER,
+      port: PORT,
+    }, Object.assign({}, CAPS, {
+      'appium:directConnectPort': PORT + 1,
+    }));
+
+    await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/wd/hub`);
   });
 
   it('should attempt to use new connection details in response capabilities - success scenario', async function () {
@@ -172,6 +206,7 @@ describe('Web2Driver - Direct Connect', function () {
     }));
 
     await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/wd/hub`);
   });
 
   after(async function () {
