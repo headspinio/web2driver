@@ -10,9 +10,10 @@ module.exports = {
   resolve: {
     symlinks: false,
   },
-  optimization: {
-    minimize: false,
-  },
+  // uncomment to turn minification off
+  //optimization: {
+    //minimize: false,
+  //},
   node: {
     fs: "empty",
     net: "empty",
