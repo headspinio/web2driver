@@ -102,3 +102,12 @@ npm run test-open # open up the test bundle in a browser, causing the tests to l
 ```
 
 At the moment, tests assume an Appium server running on port 4723, with iOS support (so running on a Mac).
+
+## Credits
+
+[![][headspin-wordmark]](https://headspin.io)
+
+`web2driver` is maintained by [HeadSpin](https://headspin.io). HeadSpin is the next generation global platform for mobile app testing and monitoring.
+
+
+[headspin-wordmark]: docs/images/headspin-wordmark.png "HeadSpin"
