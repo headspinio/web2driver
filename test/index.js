@@ -132,6 +132,18 @@ describe('Web2Driver', function () {
     (Date.now() - start).should.be.above(2000);
   });
 
+  it('should be able to explicitly wait for an element', async function () {
+    await driver.waitForElement(2000, 'id', 'innerDiv');
+  });
+
+  it('should throw an error after timeout for explicit wait', async function () {
+    let start = Date.now();
+    try {
+      await driver.waitForElement(2000, 'id', 'doesnotexist');
+    } catch (ign) {}
+    (Date.now() - start).should.be.above(2000);
+  });
+
   it('should be able to attach to an existing session', async function () {
     const driver2 = await Web2Driver.attachToSession(driver.sessionId, {
       hostname: SERVER,

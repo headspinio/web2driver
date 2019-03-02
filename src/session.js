@@ -75,6 +75,23 @@ export default class Session {
     return ress.map(res => getElementFromResponse(res, this));
   }
 
+  async waitForElement (ms, using, value) {
+    let el = null;
+    const start = Date.now();
+    const end = start + ms;
+    while (el === null && Date.now() < end) {
+      try {
+        el = await this.findElement(using, value);
+      } catch (ign) {}
+    }
+
+    if (el) {
+      return el;
+    }
+
+    throw new Error(`Could not find element using strategy ${using} and value '${value}' after ${ms}ms`);
+  }
+
   async executeBase (cmd, script, args) {
     args = args.map((a) => {
       if (a.__is_w2d_element) {

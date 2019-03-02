@@ -41,6 +41,14 @@ TBD. Web2Driver uses the WebDriverIO's [base protocol layer](https://github.com/
 
 ## Additional Features
 
+### Explicit Waits
+
+You can wait for an element up to a timeout in milliseconds:
+
+```js
+const el = await driver.waitForElement(10000, 'accessibility id', 'foo');
+```
+
 ### Direct Connect URLs
 
 If your Selenium/Appium server decorates the new session capabilities response with the following keys:
