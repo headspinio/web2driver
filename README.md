@@ -49,6 +49,12 @@ You can wait for an element up to a timeout in milliseconds:
 const el = await driver.waitForElement(10000, 'accessibility id', 'foo');
 ```
 
+There is also the ability to wait for multiple elements (which will retry until the list of elements is non-empty, and throw after the timeout if it's still empty):
+
+```js
+const els = await driver.waitForElements(10000, 'class name', 'android.widget.EditText');
+```
+
 ### Direct Connect URLs
 
 If your Selenium/Appium server decorates the new session capabilities response with the following keys:

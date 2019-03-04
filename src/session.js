@@ -92,6 +92,21 @@ export default class Session {
     throw new Error(`Could not find element using strategy ${using} and value '${value}' after ${ms}ms`);
   }
 
+  async waitForElements (ms, using, value) {
+    let els = [];
+    const start = Date.now();
+    const end = start + ms;
+    while (els.length === 0 && Date.now() < end) {
+      els = await this.findElements(using, value);
+    }
+
+    if (els.length) {
+      return els;
+    }
+
+    throw new Error(`Could not find any elements using strategy ${using} and value '${value}' after ${ms}ms`);
+  }
+
   async executeBase (cmd, script, args) {
     args = args.map((a) => {
       if (a.__is_w2d_element) {
