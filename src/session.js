@@ -2,10 +2,10 @@ import { sum, includes } from 'lodash';
 import logger from '@wdio/logger';
 import UIElement, { ELEMENT_CMDS, getElementFromResponse } from './element';
 import { keys, toPairs } from 'lodash';
-import WebDriverProtocol from 'webdriver/protocol/webdriver.json';
-import JsonWProtocol from 'webdriver/protocol/jsonwp.json';
-import MJsonWProtocol from 'webdriver/protocol/mjsonwp.json';
-import AppiumProtocol from 'webdriver/protocol/appium.json';
+import WebDriverProtocol from '@wdio/protocols/protocols/webdriver.json';
+import JsonWProtocol from '@wdio/protocols/protocols/jsonwp.json';
+import MJsonWProtocol from '@wdio/protocols/protocols/mjsonwp.json';
+import AppiumProtocol from '@wdio/protocols/protocols/appium.json';
 
 const log = logger('web2driver');
 
