@@ -13,7 +13,8 @@ const CAPS = {
   platformName: "iOS",
   platformVersion: "11.4",
   deviceName: "iPhone 8",
-  browserName: "Safari"
+  browserName: "Safari",
+  automationName: "XCUITest",
 };
 
 const TEST_URL = "http://localhost:8080/test/fixture.html";
