@@ -37,7 +37,7 @@ async function automation() {
 
 ## Core API
 
-TBD. Web2Driver uses the WebDriverIO's [base protocol layer](https://github.com/webdriverio/webdriverio/blob/master/packages/webdriver/protocol) basically without change, so command names are the same as are listed in the various available protocols.
+TBD. Web2Driver uses the WebDriverIO's [base protocol layer](https://github.com/webdriverio/webdriverio/tree/master/packages/wdio-protocols/protocols) basically without change, so command names are the same as are listed in the various available protocols.
 
 ## Additional Features
 
