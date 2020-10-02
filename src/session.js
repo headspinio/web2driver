@@ -6,6 +6,7 @@ import WebDriverProtocol from '@wdio/protocols/protocols/webdriver.json';
 import JsonWProtocol from '@wdio/protocols/protocols/jsonwp.json';
 import MJsonWProtocol from '@wdio/protocols/protocols/mjsonwp.json';
 import AppiumProtocol from '@wdio/protocols/protocols/appium.json';
+import { DEFAULTS } from './driver';
 
 const log = logger('web2driver');
 
@@ -16,7 +17,7 @@ const PREFIXED_DIRECT_CAPS = DIRECT_CONNECT_CAPS.map(c => `appium:${c}`);
 
 export default class Session {
 
-  constructor (wdSessionClient, logLevel) {
+  constructor (wdSessionClient, logLevel = DEFAULTS.logLevel) {
     this.client = wdSessionClient;
     this.updateConnectionDetails();
     log.setLevel && log.setLevel(logLevel);

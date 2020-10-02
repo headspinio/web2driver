@@ -2,7 +2,7 @@ import WDCore from 'webdriver';
 import Session from './session';
 import { cloneDeep } from 'lodash';
 
-const DEFAULTS = {
+export const DEFAULTS = {
   protocol: "http",
   hostname: "0.0.0.0",
   port: 4444,
@@ -32,6 +32,7 @@ export default class Web2Driver {
     hostname = DEFAULTS.hostname,
     port = DEFAULTS.port,
     path = DEFAULTS.path,
+    logLevel = DEFAULTS.logLevel,
     ...otherParams
   }, capabilities = {}, isW3C = true) {
     if (!sessionId) {
@@ -39,6 +40,6 @@ export default class Web2Driver {
     }
     const params = {sessionId, isW3C, protocol, hostname, port, path, capabilities, ...otherParams};
     const sessionClient = await WDCore.attachToSession(params);
-    return new Session(sessionClient);
+    return new Session(sessionClient, logLevel);
   }
 }

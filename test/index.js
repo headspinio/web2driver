@@ -33,7 +33,7 @@ describe('Web2Driver', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     }, CAPS);
 
     await driver.navigateTo(TEST_URL);
@@ -164,7 +164,7 @@ describe('Web2Driver', function () {
     const driver2 = await Web2Driver.attachToSession(driver.sessionId, {
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     });
     (await driver2.getUrl()).should.eql(TEST_URL);
   });
@@ -183,7 +183,7 @@ describe('Web2Driver - Direct Connect', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
@@ -205,7 +205,7 @@ describe('Web2Driver - Direct Connect', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
@@ -227,20 +227,20 @@ describe('Web2Driver - Direct Connect', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     }, Object.assign({}, CAPS, {
       'appium:directConnectPort': PORT + 1,
     }));
 
     await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
+    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
   });
 
   it('should attempt to use new connection details in response capabilities - success scenario', async function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
-      path: '',
+      path: '/',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
