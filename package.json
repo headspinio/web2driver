@@ -4,11 +4,13 @@
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
   "main": "dist/main.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && npm run build-node",
     "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
+    "build-node": "tsc",
     "clean": "rm -rf ./dist/*.js && rm -rf package-lock.json && rm -rf node_modules && npm install",
     "test-server": "npm run build-test && webpack-dev-server --config webpack.config.test.js",
     "test-open": "open http://localhost:8080/test",
+    "test-node": "mocha -t 180000 -R spec debug ./node/test",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -38,6 +40,7 @@
     "mocha-loader": "^2.0.0",
     "should": "^13.2.3",
     "source-map-support": "^0.5.9",
+    "typescript": "^4.0.3",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.9"

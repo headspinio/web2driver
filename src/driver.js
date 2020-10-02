@@ -7,6 +7,7 @@ const DEFAULTS = {
   hostname: "0.0.0.0",
   port: 4444,
   path: "/wd/hub",
+  logLevel: typeof window === 'undefined' ? 'silent' : 'info'
 };
 
 export default class Web2Driver {
@@ -16,13 +17,14 @@ export default class Web2Driver {
     hostname = DEFAULTS.hostname,
     port = DEFAULTS.port,
     path = DEFAULTS.path,
+    logLevel = DEFAULTS.logLevel,
     ...otherParams
   },
     capabilities = {}
   ) {
-    const params = {protocol, hostname, port, path, capabilities, ...otherParams};
+    const params = {protocol, hostname, port, path, capabilities, logLevel, ...otherParams};
     const sessionClient = await WDCore.newSession(params);
-    return new Session(sessionClient);
+    return new Session(sessionClient, logLevel);
   }
 
   static async attachToSession (sessionId, {

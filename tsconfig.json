@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowJs": true,
+        "target": "es6",
+        "outDir": "node",
+        "inlineSourceMap": true
+    },
+    "include": ["index.js", "src/**/*.js", "test/**/*.js"]
+}

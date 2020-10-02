@@ -7,8 +7,9 @@ export default class UIElement {
   constructor (elementKey, findRes, parent) {
     this.elementKey = elementKey;
     this.elementId = this[elementKey] = findRes[elementKey];
-    this.client = parent.client;
     this.__is_w2d_element = true;
+    this.parent = parent;
+    this.session = parent.session || parent;
   }
 
   get executeObj () {
@@ -16,12 +17,12 @@ export default class UIElement {
   }
 
   async findElement (using, value) {
-    const res = await this.client.findElementFromElement(this.elementId, using, value);
+    const res = await this.session.cmd('findElementFromElement', this.elementId, using, value);
     return getElementFromResponse(res, this);
   }
 
   async findElements (using, value) {
-    const ress = await this.client.findElementsFromElement(this.elementId, using, value);
+    const ress = await this.session.cmd('findElementsFromElement', this.elementId, using, value);
     return ress.map(res => getElementFromResponse(res, this));
   }
 }
@@ -37,7 +38,7 @@ function getElementFromResponse (res, parent) {
 
   if (!res[elementKey]) {
     throw new Error(`Bad findElement response; did not have element key. ` +
-                    `Response was: ${res}`);
+                    `Response was: ${JSON.stringify(res)}`);
   }
 
   return new UIElement(elementKey, res, parent);
@@ -65,7 +66,7 @@ const ELEMENT_CMDS = {
 
 for (const [protoCmd, newCmd] of toPairs(ELEMENT_CMDS)) {
   UIElement.prototype[newCmd] = async function (...args) {
-    return await this.client[protoCmd](this.elementId, ...args);
+    return await this.session.cmd(protoCmd, this.elementId, ...args);
   }
 }
 

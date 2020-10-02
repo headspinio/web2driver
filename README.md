@@ -1,6 +1,6 @@
 # web2driver
 
-A pure-JS webdriver client that runs in the browser. Since it runs in the browser it depends on XHR requests to speak to the automation server. Because of CORS, the automation server must send the appropriate access control headers for requests from web2driver to the automation server to work. Appium does this by default, but Selenium does not.
+A pure-JS webdriver client that runs in the browser (but also Node!). Since it runs in the browser it depends on XHR requests to speak to the automation server. Because of CORS, the automation server must send the appropriate access control headers for requests from web2driver to the automation server to work. Appium does this if you run it with the `--allow-cors` flag, but Selenium does not.
 
 This means that, unless you put a proxy in front of Selenium, web2driver currently works only with Appium.
 
@@ -14,6 +14,8 @@ First, get your Appium server up and running on a host and port that you know. T
 
 ```js
 import Web2Driver from 'web2driver';
+// or if you want it with Node:
+// import Web2Driver from 'web2driver/node';
 
 async function automation() {
     const serverOpts = {hostname: "localhost", port: 4723};

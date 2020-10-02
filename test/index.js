@@ -11,7 +11,7 @@ const SERVER = "127.0.0.1";
 const PORT = 4723;
 const CAPS = {
   platformName: "iOS",
-  platformVersion: "11.4",
+  platformVersion: "13.6",
   deviceName: "iPhone 8",
   browserName: "Safari",
   automationName: "XCUITest",
@@ -19,7 +19,9 @@ const CAPS = {
 
 const TEST_URL = "http://localhost:8080/test/fixture.html";
 
-mocha.setup({timeout: MOCHA_TIMEOUT});
+if (typeof mocha !== 'undefined') {
+  mocha.setup({timeout: MOCHA_TIMEOUT});
+}
 
 describe('Web2Driver', function () {
 
@@ -31,6 +33,7 @@ describe('Web2Driver', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
+      path: '',
     }, CAPS);
 
     await driver.navigateTo(TEST_URL);
@@ -108,9 +111,9 @@ describe('Web2Driver', function () {
     const ctx = await driver.getContext();
     await driver.switchContext('NATIVE_APP');
     try {
-      let el = await driver.findElement('accessibility id', 'Address');
+      let el = await driver.waitForElement(1000, 'accessibility id', 'Address');
       await el.click();
-      el = await driver.findElement('accessibility id', 'Address');
+      el = await driver.waitForElement(1000, 'accessibility id', 'Address');
       (await el.getText()).should.not.eql('foo');
       await el.sendKeys("foo");
       (await el.getText()).should.eql('foo');
@@ -130,7 +133,7 @@ describe('Web2Driver', function () {
     try {
       await driver.findElement('id', 'doesnotexist');
     } catch (ign) {}
-    (Date.now() - start).should.be.above(2000);
+    (Date.now() - start).should.be.above(1900);
   });
 
   it('should be able to explicitly wait for an element', async function () {
@@ -161,6 +164,7 @@ describe('Web2Driver', function () {
     const driver2 = await Web2Driver.attachToSession(driver.sessionId, {
       hostname: SERVER,
       port: PORT,
+      path: '',
     });
     (await driver2.getUrl()).should.eql(TEST_URL);
   });
@@ -179,6 +183,7 @@ describe('Web2Driver - Direct Connect', function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
+      path: '',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
@@ -193,13 +198,14 @@ describe('Web2Driver - Direct Connect', function () {
       err = e;
     }
     driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.should.match(/XHR error/);
+    err.message.should.match(/(NetworkError|ECONNREFUSED)/);
   });
 
   it('should attempt to use new connection details in response capabilities - unprefixed caps', async function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
+      path: '',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
@@ -214,34 +220,36 @@ describe('Web2Driver - Direct Connect', function () {
       err = e;
     }
     driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.should.match(/XHR error/);
+    err.message.should.match(/(NetworkError|ECONNREFUSED)/);
   });
 
   it('should not use direct connection caps if they are not all present', async function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
+      path: '',
     }, Object.assign({}, CAPS, {
       'appium:directConnectPort': PORT + 1,
     }));
 
     await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/wd/hub`);
+    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
   });
 
   it('should attempt to use new connection details in response capabilities - success scenario', async function () {
     driver = await Web2Driver.remote({
       hostname: SERVER,
       port: PORT,
+      path: '',
     }, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
       'appium:directConnectPort': PORT,
-      'appium:directConnectPath': '/wd/hub',
+      'appium:directConnectPath': '',
     }));
 
     await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/wd/hub`);
+    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
   });
 
   after(async function () {

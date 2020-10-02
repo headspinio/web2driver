@@ -16,9 +16,18 @@ const PREFIXED_DIRECT_CAPS = DIRECT_CONNECT_CAPS.map(c => `appium:${c}`);
 
 export default class Session {
 
-  constructor (wdSessionClient) {
+  constructor (wdSessionClient, logLevel) {
     this.client = wdSessionClient;
     this.updateConnectionDetails();
+    log.setLevel && log.setLevel(logLevel);
+  }
+
+  async cmd (commandName, ...args) {
+    const res = await this.client[commandName](...args);
+    if (res && res.error) {
+      throw new Error(res.message ? res.message : res.error);
+    }
+    return res;
   }
 
   updateConnectionDetails () {
@@ -66,12 +75,12 @@ export default class Session {
   }
 
   async findElement (using, value) {
-    const res = await this.client.findElement(using, value);
+    const res = await this.cmd('findElement', using, value);
     return getElementFromResponse(res, this);
   }
 
   async findElements (using, value) {
-    const ress = await this.client.findElements(using, value);
+    const ress = await this.cmd('findElements', using, value);
     return ress.map(res => getElementFromResponse(res, this));
   }
 
@@ -114,7 +123,7 @@ export default class Session {
       }
       return a;
     });
-    return await this.client[cmd](script, args);
+    return await this.cmd(cmd, script, args);
   }
 
   async executeScript (script, args) {
@@ -163,7 +172,7 @@ for (const proto of [WebDriverProtocol, JsonWProtocol, MJsonWProtocol, AppiumPro
                       cmdData.command;
 
       Session.prototype[cmdName] = async function (...args) {
-        return await this.client[cmdData.command](...args);
+        return await this.cmd(cmdData.command, ...args);
       }
     }
   }
