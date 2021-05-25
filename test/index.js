@@ -11,10 +11,10 @@ const SERVER = "127.0.0.1";
 const PORT = 4723;
 const CAPS = {
   platformName: "iOS",
-  platformVersion: "13.6",
-  deviceName: "iPhone 8",
   browserName: "Safari",
-  automationName: "XCUITest",
+  'appium:platformVersion': "14.4",
+  'appium:deviceName': "iPhone 11",
+  'appium:automationName': "XCUITest",
 };
 
 const TEST_URL = "http://localhost:8080/test/fixture.html";
@@ -111,9 +111,9 @@ describe('Web2Driver', function () {
     const ctx = await driver.getContext();
     await driver.switchContext('NATIVE_APP');
     try {
-      let el = await driver.waitForElement(1000, 'accessibility id', 'Address');
+      let el = await driver.waitForElement(1000, 'accessibility id', 'URL');
       await el.click();
-      el = await driver.waitForElement(1000, 'accessibility id', 'Address');
+      el = await driver.waitForElement(1000, 'accessibility id', 'URL');
       (await el.getText()).should.not.eql('foo');
       await el.sendKeys("foo");
       (await el.getText()).should.eql('foo');
