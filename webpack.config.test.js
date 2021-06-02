@@ -8,13 +8,10 @@ const testConfig = _.cloneDeep(base);
 testConfig.entry[testConfig.entry.length - 1] = './test/index.js';
 testConfig.mode = 'development';
 testConfig.devtool = 'inline-source-map';
-testConfig.output = {
-  filename: 'test.js',
-  path: path.resolve(__dirname, 'dist')
-};
+testConfig.output.filename = 'test.js';
 testConfig.module.rules.unshift({
   test: /test.*\.js$/,
-  use: 'mocha-loader',
+  loader: 'mocha-loader',
   exclude: /node_modules/
 });
 
