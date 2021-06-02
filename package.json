@@ -16,6 +16,14 @@
     "test:node": "mocha -t 180000 -R spec ./node/test",
     "prepublish": "npm run build:web && npm run build:node"
   },
+  "files": [
+    "dist/main.js",
+    "dist/main.js.map",
+    "node",
+    "src",
+    "index.js",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/projectxyzio/web2driver.git"
