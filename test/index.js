@@ -1,4 +1,4 @@
-import Web2Driver from '../src';
+import Web2Driver from '../index';
 import chai from 'chai';
 import should from 'should';
 
@@ -17,7 +17,7 @@ const CAPS = {
   'appium:automationName': "XCUITest",
 };
 
-const TEST_URL = "http://localhost:8080/test/fixture.html";
+const TEST_URL = "http://localhost:1234/fixture.html";
 
 if (typeof mocha !== 'undefined') {
   mocha.setup({timeout: MOCHA_TIMEOUT});

@@ -2,16 +2,19 @@
   "name": "web2driver",
   "version": "2.0.0",
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
-  "main": "dist/main.js",
+  "main": "./dist/main.js",
+  "targets": {
+    "main": {
+      "includeNodeModules": true
+    }
+  },
   "scripts": {
-    "build": "webpack && npm run build-node",
-    "build-test": "rm -rf ./dist/test.js && webpack --config webpack.config.test.js",
-    "build-node": "tsc",
-    "clean": "rm -rf ./dist/*.js && rm -rf package-lock.json && rm -rf node_modules && npm install",
-    "test-server": "webpack-cli serve --config webpack.config.test.js",
-    "test-open": "open http://localhost:8080/test",
-    "test-node": "npm run build-node && mocha -t 180000 -R spec ./node/test",
-    "prepublish": "npm run build"
+    "build:web": "parcel build index.js",
+    "build:node": "tsc",
+    "clean": "rm -rf ./dist && rm -rf ./node && rm -rf package-lock.json && rm -rf node_modules && rm -rf .parcel-cache && npm install",
+    "test:web": "parcel serve './test/*.html' --open",
+    "test:node": "mocha -t 180000 -R spec ./node/test",
+    "prepublish": "npm run build:web && npm run build:node"
   },
   "repository": {
     "type": "git",
@@ -30,21 +33,12 @@
   },
   "homepage": "https://github.com/projectxyzio/web2driver#readme",
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/polyfill": "^7.0.0",
-    "@babel/preset-env": "^7.1.6",
-    "@webpack-cli/serve": "^1.4.0",
-    "babel-loader": "^8.0.4",
     "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
     "mocha": "^8.4.0",
-    "mocha-loader": "^5.1.5",
+    "parcel": "^2.0.0-beta.3.1",
     "should": "^13.2.3",
     "source-map-support": "^0.5.9",
-    "typescript": "^4.0.3",
-    "webpack": "^5.37.1",
-    "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^3.11.2"
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "lodash": "^4.17.11",
