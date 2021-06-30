@@ -123,7 +123,7 @@ At the moment, tests assume an Appium server running on port 4723, with iOS supp
 
 [![][headspin-wordmark]](https://headspin.io)
 
-`web2driver` is maintained by [HeadSpin](https://headspin.io). HeadSpin is the next generation global platform for mobile app testing and monitoring.
+`web2driver` is maintained by [HeadSpin](https://headspin.io). HeadSpin is the collaborative platform for real edge debugging and testing.
 
 
 [headspin-wordmark]: docs/images/headspin-wordmark.png "HeadSpin"
