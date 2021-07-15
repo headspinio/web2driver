@@ -1,6 +1,6 @@
 {
   "name": "web2driver",
-  "version": "2.0.0",
+  "version": "3.0.0-beta.1",
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
   "main": "./dist/main.js",
   "targets": {
@@ -11,8 +11,10 @@
   "scripts": {
     "build:web": "parcel build index.js",
     "build:node": "tsc",
-    "clean": "rm -rf ./dist && rm -rf ./node && rm -rf package-lock.json && rm -rf node_modules && rm -rf .parcel-cache && npm install",
+    "clean": "npm run clean:cache && rm -rf package-lock.json && rm -rf node_modules && npm install",
+    "clean:cache": "rm -rf ./dist && rm -rf ./node && rm -rf ./.parcel-cache",
     "test:web": "parcel serve './test/*.html' --open",
+    "test:web:rerun": "parcel serve './test/*.html'",
     "test:node": "mocha -t 180000 -R spec ./node/test",
     "prepublish": "npm run build:web && npm run build:node"
   },
@@ -49,8 +51,10 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "@wdio/logger": "^7.7.0",
+    "@wdio/protocols": "^7.5.3",
     "lodash": "^4.17.11",
     "process": "^0.11.10",
-    "webdriver": "^5.2.5"
+    "webdriver": "^7.7.2"
   }
 }

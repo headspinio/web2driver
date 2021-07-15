@@ -9,6 +9,12 @@ const INIT_TIMEOUT = 120000;
 
 const SERVER = "127.0.0.1";
 const PORT = 4723;
+const OPTS = {
+  hostname: SERVER,
+  port: PORT,
+  path: '/',
+  connectionRetryCount: 0,
+}
 const CAPS = {
   platformName: "iOS",
   browserName: "Safari",
@@ -30,11 +36,7 @@ describe('Web2Driver', function () {
   before(async function () {
     this.timeout(INIT_TIMEOUT);
 
-    driver = await Web2Driver.remote({
-      hostname: SERVER,
-      port: PORT,
-      path: '/',
-    }, CAPS);
+    driver = await Web2Driver.remote(OPTS, CAPS);
 
     await driver.navigateTo(TEST_URL);
   });
@@ -64,6 +66,17 @@ describe('Web2Driver', function () {
   it('should be able to find elements and do stuff to them', async function () {
     const el = await driver.findElement('id', 'header');
     (await el.getText()).should.eql('This is a header');
+  });
+
+  it('should throw errors for not found elements', async function () {
+    let err;
+    try {
+      await driver.findElement('id', 'notathingatall');
+    } catch (_err) {
+      err = _err;
+    }
+    should.exist(err);
+    err.message.should.match(/element could not be located/);
   });
 
   it('should be able to find multiple elements', async function () {
@@ -180,11 +193,7 @@ describe('Web2Driver - Direct Connect', function () {
   });
 
   it('should attempt to use new connection details in response capabilities - failure scenario', async function () {
-    driver = await Web2Driver.remote({
-      hostname: SERVER,
-      port: PORT,
-      path: '/',
-    }, Object.assign({}, CAPS, {
+    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
       'appium:directConnectPort': 4724,
@@ -198,15 +207,11 @@ describe('Web2Driver - Direct Connect', function () {
       err = e;
     }
     driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.message.should.match(/(NetworkError|ECONNREFUSED)/);
+    err.message.should.match(/failed to fetch/i);
   });
 
   it('should attempt to use new connection details in response capabilities - unprefixed caps', async function () {
-    driver = await Web2Driver.remote({
-      hostname: SERVER,
-      port: PORT,
-      path: '/',
-    }, Object.assign({}, CAPS, {
+    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
       'appium:directConnectPort': 4724,
@@ -220,15 +225,11 @@ describe('Web2Driver - Direct Connect', function () {
       err = e;
     }
     driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.message.should.match(/(NetworkError|ECONNREFUSED)/);
+    err.message.should.match(/failed to fetch/i);
   });
 
   it('should not use direct connection caps if they are not all present', async function () {
-    driver = await Web2Driver.remote({
-      hostname: SERVER,
-      port: PORT,
-      path: '/',
-    }, Object.assign({}, CAPS, {
+    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
       'appium:directConnectPort': PORT + 1,
     }));
 
@@ -237,11 +238,7 @@ describe('Web2Driver - Direct Connect', function () {
   });
 
   it('should attempt to use new connection details in response capabilities - success scenario', async function () {
-    driver = await Web2Driver.remote({
-      hostname: SERVER,
-      port: PORT,
-      path: '/',
-    }, Object.assign({}, CAPS, {
+    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
       'appium:directConnectPort': PORT,
