@@ -16,7 +16,7 @@
     "test:web": "parcel serve './test/*.html' --open",
     "test:web:rerun": "parcel serve './test/*.html'",
     "test:node": "mocha -t 180000 -R spec ./node/test",
-    "prepublish": "npm run build:web && npm run build:node"
+    "prepublishOnly": "npm run build:web && npm run build:node"
   },
   "files": [
     "dist/main.js",
