@@ -1,6 +1,6 @@
 {
   "name": "web2driver",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
   "main": "./dist/main.js",
   "targets": {
