@@ -44,17 +44,17 @@
   "homepage": "https://github.com/projectxyzio/web2driver#readme",
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^8.4.0",
-    "parcel": "^2.0.0-beta.3.1",
+    "mocha": "^9.0.3",
+    "parcel": "^2.0.0-rc.0",
     "should": "^13.2.3",
     "source-map-support": "^0.5.9",
-    "typescript": "^4.0.3"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "@wdio/logger": "^7.7.0",
-    "@wdio/protocols": "^7.5.3",
+    "@wdio/protocols": "^7.7.4",
     "lodash": "^4.17.11",
     "process": "^0.11.10",
-    "webdriver": "^7.7.2"
+    "webdriver": "^7.9.1"
   }
 }
