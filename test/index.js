@@ -21,6 +21,7 @@ const CAPS = {
   'appium:platformVersion': "14.4",
   'appium:deviceName': "iPhone 11",
   'appium:automationName': "XCUITest",
+  'appium:noReset': true,
 };
 
 const TEST_URL = "http://localhost:1234/fixture.html";
@@ -182,6 +183,30 @@ describe('Web2Driver', function () {
     (await driver2.getUrl()).should.eql(TEST_URL);
   });
 
+});
+
+describe('Web2Driver - Auth details', function () {
+  it('should be able to send auth details without error', async function () {
+    let err;
+    const opts = {
+      connectionRetryCount: 0,
+      hostname: SERVER,
+      key: "foo",
+      path: "/",
+      port: PORT,
+      protocol: "http",
+      user: "user",
+    };
+    const caps = {};
+    try {
+      await Web2Driver.remote(opts, caps);
+    } catch (e) {
+      err = e;
+    }
+    // we expect an error because appium servers don't allow the authorization header, but if we
+    // get this far, we knew we sent it ok anyway
+    err.message.should.match(/Failed to fetch/);
+  });
 });
 
 describe('Web2Driver - Direct Connect', function () {
