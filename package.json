@@ -55,6 +55,6 @@
     "@wdio/protocols": "^7.7.4",
     "lodash": "^4.17.11",
     "process": "^0.11.10",
-    "webdriver": "^7.9.1"
+    "webdriver": "^7.12.5"
   }
 }
