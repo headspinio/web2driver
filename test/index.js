@@ -61,7 +61,7 @@ describe('Web2Driver', function () {
 
   it('should be able to use mjsonwp commands', async function () {
     const ctxs = await driver.getContexts();
-    ctxs.length.should.eql(2);
+    ctxs.length.should.be.above(1);
   });
 
   it('should be able to find elements and do stuff to them', async function () {
