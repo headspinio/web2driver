@@ -18,8 +18,8 @@ const OPTS = {
 const CAPS = {
   platformName: "iOS",
   browserName: "Safari",
-  'appium:platformVersion': "14.4",
-  'appium:deviceName': "iPhone 11",
+  'appium:platformVersion': "15.2",
+  'appium:deviceName': "iPhone 13",
   'appium:automationName': "XCUITest",
   'appium:noReset': true,
 };
