@@ -27,7 +27,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/projectxyzio/web2driver.git"
+    "url": "git+https://github.com/headspinio/web2driver.git"
   },
   "keywords": [
     "Appium",
@@ -38,9 +38,9 @@
   "author": "Jonathan Lipps <jlipps@headspin.io>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/projectxyzio/web2driver/issues"
+    "url": "https://github.com/headspinio/web2driver/issues"
   },
-  "homepage": "https://github.com/projectxyzio/web2driver#readme",
+  "homepage": "https://github.com/headspinio/web2driver#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^9.0.3",
