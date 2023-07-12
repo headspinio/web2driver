@@ -1,6 +1,5 @@
 import WDCore from 'webdriver';
 import Session from './session';
-import { cloneDeep } from 'lodash';
 
 export const DEFAULTS = {
   protocol: "http",

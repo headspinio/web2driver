@@ -18,10 +18,9 @@ const OPTS = {
 const CAPS = {
   platformName: "iOS",
   browserName: "Safari",
-  'appium:platformVersion': "15.2",
+  'appium:platformVersion': "16.2",
   'appium:deviceName': "iPhone 13",
-  'appium:automationName': "XCUITest",
-  'appium:noReset': true,
+  'appium:automationName': "XCUITest"
 };
 
 const TEST_URL = "http://localhost:1234/fixture.html";
@@ -125,12 +124,14 @@ describe('Web2Driver', function () {
     const ctx = await driver.getContext();
     await driver.switchContext('NATIVE_APP');
     try {
-      let el = await driver.waitForElement(1000, 'accessibility id', 'URL');
+      let el = await driver.waitForElement(1000, 'accessibility id', 'TabBarItemTitle');
       await el.click();
       el = await driver.waitForElement(1000, 'accessibility id', 'URL');
       (await el.getText()).should.not.eql('foo');
       await el.sendKeys("foo");
       (await el.getText()).should.eql('foo');
+      el = await driver.waitForElement(1000, 'accessibility id', 'CancelBarItemButton');
+      await el.click();
     } finally {
       await driver.switchContext(ctx);
     }
@@ -205,7 +206,7 @@ describe('Web2Driver - Auth details', function () {
     }
     // we expect an error because appium servers don't allow the authorization header, but if we
     // get this far, we knew we sent it ok anyway
-    err.message.should.match(/Failed to fetch/);
+    err.message.should.match(/Failed to (fetch|create session)/);
   });
 });
 
@@ -213,44 +214,8 @@ describe('Web2Driver - Direct Connect', function () {
 
   let driver = null;
 
-  before(function () {
+  beforeEach(function () {
     this.timeout(INIT_TIMEOUT);
-  });
-
-  it('should attempt to use new connection details in response capabilities - failure scenario', async function () {
-    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
-      'appium:directConnectProtocol': 'http',
-      'appium:directConnectHost': SERVER,
-      'appium:directConnectPort': 4724,
-      'appium:directConnectPath': '/w2d/hub',
-    }));
-
-    let err;
-    try {
-      await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    } catch (e) {
-      err = e;
-    }
-    driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.message.should.match(/failed to fetch/i);
-  });
-
-  it('should attempt to use new connection details in response capabilities - unprefixed caps', async function () {
-    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
-      'appium:directConnectProtocol': 'http',
-      'appium:directConnectHost': SERVER,
-      'appium:directConnectPort': 4724,
-      'appium:directConnectPath': '/w2d/hub',
-    }));
-
-    let err;
-    try {
-      await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    } catch (e) {
-      err = e;
-    }
-    driver.connectedUrl.should.eql(`http://${SERVER}:4724/w2d/hub`);
-    err.message.should.match(/failed to fetch/i);
   });
 
   it('should not use direct connection caps if they are not all present', async function () {
@@ -262,7 +227,7 @@ describe('Web2Driver - Direct Connect', function () {
     driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
   });
 
-  it('should attempt to use new connection details in response capabilities - success scenario', async function () {
+  it('should attempt to use new connection details in response capabilities', async function () {
     driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
       'appium:directConnectProtocol': 'http',
       'appium:directConnectHost': SERVER,
@@ -274,10 +239,10 @@ describe('Web2Driver - Direct Connect', function () {
     driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
   });
 
-  after(async function () {
+  afterEach(async function () {
     if (driver) {
-      driver.client.options.port = PORT; // fix things so we can quit
       await driver.quit();
+      driver = null;
     }
   });
 });

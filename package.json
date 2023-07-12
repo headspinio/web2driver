@@ -13,8 +13,9 @@
     "build:node": "tsc",
     "clean": "npm run clean:cache && rm -rf package-lock.json && rm -rf node_modules && npm install",
     "clean:cache": "rm -rf ./dist && rm -rf ./node && rm -rf ./.parcel-cache",
+    "test:fixture": "parcel serve './test/fixture.html'",
     "test:web": "node pre-transform.js && npm run clean:cache && parcel serve './test/*.html' --open",
-    "test:node": "mocha -t 180000 -R spec ./node/test",
+    "test:node": "npm run build:node && mocha -t 180000 -R spec ./node/test",
     "prepublishOnly": "npm run clean:cache && npm run build:web && npm run build:node"
   },
   "files": [
@@ -42,13 +43,24 @@
   },
   "homepage": "https://github.com/headspinio/web2driver#readme",
   "devDependencies": {
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
     "chai": "^4.1.2",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
     "mocha": "^9.0.3",
+    "os-browserify": "^0.3.0",
     "parcel": "^2.0.0-rc.0",
+    "path-browserify": "^1.0.1",
     "should": "^13.2.3",
     "source-map-support": "^0.5.9",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "ts-node": "^10.2.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "url": "^0.11.1",
+    "util": "^0.12.5"
   },
   "dependencies": {
     "@wdio/logger": "^7.7.0",

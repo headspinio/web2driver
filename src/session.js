@@ -1,7 +1,6 @@
-import { sum, includes } from 'lodash';
+import { includes, keys, toPairs } from 'lodash';
 import logger from '@wdio/logger';
-import UIElement, { ELEMENT_CMDS, getElementFromResponse } from './element';
-import { keys, toPairs } from 'lodash';
+import { ELEMENT_CMDS, getElementFromResponse } from './element';
 import WebDriverProtocol from '@wdio/protocols/protocols/webdriver.json';
 import JsonWProtocol from '@wdio/protocols/protocols/jsonwp.json';
 import MJsonWProtocol from '@wdio/protocols/protocols/mjsonwp.json';
@@ -19,7 +18,6 @@ export default class Session {
 
   constructor (wdSessionClient, logLevel = DEFAULTS.logLevel) {
     this.client = wdSessionClient;
-    this.updateConnectionDetails();
     log.setLevel && log.setLevel(logLevel);
   }
 
@@ -29,37 +27,6 @@ export default class Session {
       throw new Error(res.message ? res.message : res.error);
     }
     return res;
-  }
-
-  updateConnectionDetails () {
-    // if the remote end has given us a direct url to use different than the
-    // one we used to instantiate the session, make sure we use that instead
-    const receivedCaps = this.client.options.capabilities;
-    const directCapsPresent = Object.keys(receivedCaps)
-      .filter(c => includes(DIRECT_CONNECT_CAPS, c));
-    const prefixedCapsPresent = Object.keys(receivedCaps)
-      .filter(c => includes(PREFIXED_DIRECT_CAPS, c));
-    const usePrefixedCaps = prefixedCapsPresent.length > directCapsPresent;
-    const directCapsToUse = usePrefixedCaps ? prefixedCapsPresent : directCapsPresent;
-    if (directCapsToUse.length > 0) {
-      if (directCapsToUse.length < DIRECT_CONNECT_CAPS.length) {
-        log.warn(
-          `Direct connect caps were used, but not all were present. ` +
-          `Required caps are: ${JSON.stringify(DIRECT_CONNECT_CAPS)}. Caps ` +
-          `received were: ${JSON.stringify(directCapsPresent)}. Will use ` +
-          `original server information.`
-        );
-        return;
-      }
-      log.info(`Direct connect caps were provided, will send subsequent requests to new host`);
-      const prefix = usePrefixedCaps ?
-        `appium:${DIRECT_CONNECT_PREFIX}` :
-        DIRECT_CONNECT_PREFIX;
-      this.client.options.protocol = receivedCaps[`${prefix}Protocol`];
-      this.client.options.hostname = receivedCaps[`${prefix}Host`];
-      this.client.options.port = receivedCaps[`${prefix}Port`];
-      this.client.options.path = receivedCaps[`${prefix}Path`];
-    }
   }
 
   get connectedUrl () {
