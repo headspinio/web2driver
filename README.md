@@ -121,6 +121,14 @@ npm run test-open # open up the test bundle in a browser, causing the tests to l
 
 At the moment, tests assume an Appium server running on port 4723, with iOS support (so running on a Mac).
 
+## release
+
+```
+npm version patch # etc
+npm publish
+# push the local commit and tag to this repository
+```
+
 ## Credits
 
 [![][headspin-wordmark]](https://www.headspin.io/)
