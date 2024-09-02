@@ -4,6 +4,8 @@ A pure-JS webdriver client that runs in the browser (but also Node!). Since it r
 
 This means that, unless you put a proxy in front of Selenium, web2driver currently works only with Appium.
 
+[![npm version](https://img.shields.io/npm/v/web2driver.svg)](https://www.npmjs.com/package/web2driver)
+
 ## Install
 
 On npm as the `web2driver` package, but bundled and exported for importing into browsers. Use webpack or some other tool to incorporate it into your app.
