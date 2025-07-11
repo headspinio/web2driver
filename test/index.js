@@ -7,8 +7,8 @@ chai.use(should);
 const MOCHA_TIMEOUT = 60000;
 const INIT_TIMEOUT = 120000;
 
-const SERVER = "127.0.0.1";
-const PORT = 4723;
+const SERVER = process.env.APPIUM_TEST_SERVER_HOST || "127.0.0.1";
+const PORT = process.env.APPIUM_TEST_SERVER_PORT || 4723;
 const OPTS = {
   hostname: SERVER,
   port: PORT,
@@ -18,10 +18,14 @@ const OPTS = {
 const CAPS = {
   platformName: "iOS",
   browserName: "Safari",
-  'appium:platformVersion': "16.2",
-  'appium:deviceName': "iPhone 13",
+  'appium:platformVersion': process.env.OS_VERSION || "17.5",
+  'appium:deviceName': process.env.DEVICE_NAME || "iPhone 15 Plus",
   'appium:automationName': "XCUITest"
 };
+if (process.env.LOCAL_PREBUILT_WDA) {
+  CAPS["appium:usePreinstalledWDA"] = true;
+  CAPS["appium:prebuiltWDAPath"] = process.env.LOCAL_PREBUILT_WDA;
+}
 
 const TEST_URL = "http://localhost:1234/fixture.html";
 
@@ -210,39 +214,42 @@ describe('Web2Driver - Auth details', function () {
   });
 });
 
-describe('Web2Driver - Direct Connect', function () {
 
-  let driver = null;
+if (!process.env.CI) {
+  describe('Web2Driver - Direct Connect', function () {
 
-  beforeEach(function () {
-    this.timeout(INIT_TIMEOUT);
+    let driver = null;
+
+    beforeEach(function () {
+      this.timeout(INIT_TIMEOUT);
+    });
+
+    it('should not use direct connection caps if they are not all present', async function () {
+      driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
+        'appium:directConnectPort': PORT + 1,
+      }));
+
+      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+      driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
+    });
+
+    it('should attempt to use new connection details in response capabilities', async function () {
+      driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
+        'appium:directConnectProtocol': 'http',
+        'appium:directConnectHost': SERVER,
+        'appium:directConnectPort': PORT,
+        'appium:directConnectPath': '',
+      }));
+
+      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+      driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
+    });
+
+    afterEach(async function () {
+      if (driver) {
+        await driver.quit();
+        driver = null;
+      }
+    });
   });
-
-  it('should not use direct connection caps if they are not all present', async function () {
-    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
-      'appium:directConnectPort': PORT + 1,
-    }));
-
-    await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
-  });
-
-  it('should attempt to use new connection details in response capabilities', async function () {
-    driver = await Web2Driver.remote(OPTS, Object.assign({}, CAPS, {
-      'appium:directConnectProtocol': 'http',
-      'appium:directConnectHost': SERVER,
-      'appium:directConnectPort': PORT,
-      'appium:directConnectPath': '',
-    }));
-
-    await driver.navigateTo("http://localhost:8080/test/fixture.html");
-    driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
-  });
-
-  afterEach(async function () {
-    if (driver) {
-      await driver.quit();
-      driver = null;
-    }
-  });
-});
+}
