@@ -27,7 +27,7 @@ if (process.env.LOCAL_PREBUILT_WDA) {
   CAPS["appium:prebuiltWDAPath"] = process.env.LOCAL_PREBUILT_WDA;
 }
 
-const TEST_URL = "http://localhost:1234/fixture.html";
+const TEST_URL = "http://127.0.0.1:1234/fixture.html";
 
 if (typeof mocha !== 'undefined') {
   mocha.setup({timeout: MOCHA_TIMEOUT});
@@ -229,7 +229,7 @@ if (!process.env.CI) {
         'appium:directConnectPort': PORT + 1,
       }));
 
-      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+      await driver.navigateTo("http://127.0.0.1:8080/test/fixture.html");
       driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
     });
 
@@ -241,7 +241,7 @@ if (!process.env.CI) {
         'appium:directConnectPath': '',
       }));
 
-      await driver.navigateTo("http://localhost:8080/test/fixture.html");
+      await driver.navigateTo("http://127.0.0.1:8080/test/fixture.html");
       driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
     });
 
