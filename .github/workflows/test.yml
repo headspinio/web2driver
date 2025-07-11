@@ -94,5 +94,5 @@ jobs:
       if: ${{ always() }}
       uses: actions/upload-artifact@master
       with:
-        name: appium log
+        name: appium log - Xcode ${{ matrix.xcodeVersion }}, OS version ${{ matrix.iosVersion }}
         path: appium.log
