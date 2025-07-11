@@ -74,7 +74,7 @@ jobs:
     - run: |
         npm install -g appium
         appium driver install xcuitest
-        nohup appium --log-timestamp --log-no-colors 2>&1 > appium.log &
+        nohup appium --port=$APPIUM_TEST_SERVER_PORT --address=$APPIUM_TEST_SERVER_HOST --log-timestamp --log-no-colors 2>&1 > appium.log &
       name: Prepare the server
 
     - run: |
