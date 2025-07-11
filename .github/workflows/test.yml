@@ -15,9 +15,6 @@ env:
   APPIUM_TEST_SERVER_HOST: '127.0.0.1'
   LOCAL_PREBUILT_WDA: ${{ github.workspace }}/wda/WebDriverAgentRunner-Runner.app
 
-        cap[:caps][:usePreinstalledWDA] = true
-        cap[:caps][:prebuiltWDAPath] = ENV['LOCAL_PREBUILT_WDA']
-
 jobs:
   build:
 
