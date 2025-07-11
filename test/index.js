@@ -1,6 +1,7 @@
 import Web2Driver from '../index';
 import chai from 'chai';
 import should from 'should';
+import _ from 'lodash';
 
 chai.use(should);
 
@@ -8,7 +9,7 @@ const MOCHA_TIMEOUT = 60000;
 const INIT_TIMEOUT = 120000;
 
 const SERVER = process.env.APPIUM_TEST_SERVER_HOST || "127.0.0.1";
-const PORT = process.env.APPIUM_TEST_SERVER_PORT || 4723;
+const PORT = _.toNumber(process.env.APPIUM_TEST_SERVER_PORT || 4723)
 const OPTS = {
   hostname: SERVER,
   port: PORT,
