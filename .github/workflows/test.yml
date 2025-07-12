@@ -21,10 +21,10 @@ jobs:
     # https://github.com/actions/runner-images/tree/main/images/macos
     strategy:
       matrix:
-        xcodeVersion: ['16.2', '15.4']
+        xcodeVersion: ['16.4', '15.4']
         include:
-        - xcodeVersion: '16.2'
-          iosVersion: '18.2'
+        - xcodeVersion: '16.4'
+          iosVersion: '18.4'
           deviceName: 'iPhone 16'
           platform: macos-15
         - xcodeVersion: '15.4'
@@ -78,7 +78,9 @@ jobs:
         appium driver run xcuitest download-wda-sim  --platform=ios --outdir=${{ github.workspace }}/wda
       name: Downloading prebuilt WDA
 
-    - run: npm run test:fixture &
+    - run: |
+        npm run build:web
+        npm run test:fixture &
 
     - run: |
         npm run test:node
