@@ -4,9 +4,7 @@
   "description": "Pure-JS, browser-based WebDriver (+ Appium) client",
   "main": "./dist/main.js",
   "targets": {
-    "main": {
-      "includeNodeModules": true
-    }
+    "main": false
   },
   "scripts": {
     "build:web": "node pre-transform.js && parcel build index.js",
@@ -51,7 +49,7 @@
     "https-browserify": "^1.0.0",
     "mocha": "^11.7.1",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.0.0-rc.0",
+    "parcel": "^2.0.0",
     "path-browserify": "^1.0.1",
     "should": "^13.2.3",
     "source-map-support": "^0.5.9",
