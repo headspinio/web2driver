@@ -7,8 +7,8 @@ chai.use(should);
 const MOCHA_TIMEOUT = 60000;
 const INIT_TIMEOUT = 120000;
 
-const SERVER = "127.0.0.1";
-const PORT = 4723;
+const SERVER = process.env.APPIUM_TEST_SERVER_HOST || "127.0.0.1";
+const PORT = parseInt(String(process.env.APPIUM_TEST_SERVER_PORT), 10) || 4723;
 const OPTS = {
   hostname: SERVER,
   port: PORT,
@@ -18,12 +18,17 @@ const OPTS = {
 const CAPS = {
   platformName: "iOS",
   browserName: "Safari",
-  'appium:platformVersion': "16.2",
-  'appium:deviceName': "iPhone 13",
-  'appium:automationName': "XCUITest"
+  "appium:platformVersion": process.env.OS_VERSION || "17.5",
+  "appium:deviceName": process.env.DEVICE_NAME || "iPhone 15 Plus",
+  "appium:automationName": "XCUITest",
+  "appium:webviewConnectTimeout": 30000,
 };
+if (process.env.LOCAL_PREBUILT_WDA) {
+  CAPS["appium:usePreinstalledWDA"] = true;
+  CAPS["appium:prebuiltWDAPath"] = process.env.LOCAL_PREBUILT_WDA;
+}
 
-const TEST_URL = "http://localhost:1234/fixture.html";
+const TEST_URL = "http://127.0.0.1:1234/fixture.html";
 
 if (typeof mocha !== 'undefined') {
   mocha.setup({timeout: MOCHA_TIMEOUT});
@@ -223,7 +228,7 @@ describe('Web2Driver - Direct Connect', function () {
       'appium:directConnectPort': PORT + 1,
     }));
 
-    await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    await driver.navigateTo("http://127.0.0.1:8080/test/fixture.html");
     driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}/`);
   });
 
@@ -235,7 +240,7 @@ describe('Web2Driver - Direct Connect', function () {
       'appium:directConnectPath': '',
     }));
 
-    await driver.navigateTo("http://localhost:8080/test/fixture.html");
+    await driver.navigateTo("http://127.0.0.1:8080/test/fixture.html");
     driver.connectedUrl.should.eql(`http://${SERVER}:${PORT}`);
   });
 

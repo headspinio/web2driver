@@ -1,0 +1,93 @@
+name: Functional Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+    - master
+    paths-ignore:
+    - 'docs/**'
+    - '*.md'
+
+env:
+  CI: true
+  APPIUM_TEST_SERVER_PORT: '4723'
+  APPIUM_TEST_SERVER_HOST: '127.0.0.1'
+  LOCAL_PREBUILT_WDA: ${{ github.workspace }}/wda/WebDriverAgentRunner-Runner.app
+
+jobs:
+  build:
+
+    # https://github.com/actions/runner-images/tree/main/images/macos
+    strategy:
+      matrix:
+        xcodeVersion: ['16.4']
+        include:
+        - xcodeVersion: '16.4'
+          iosVersion: '18.4'
+          deviceName: 'iPhone 16'
+          platform: macos-15
+      fail-fast: false
+
+    runs-on: ${{ matrix.platform }}
+
+    name: e2e
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Select Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: "${{ matrix.xcodeVersion }}"
+
+    - run: xcrun simctl list devices available
+      name: List Installed Simulators
+    - run: |
+        brew install xq
+        xcrun simctl list runtimes
+        xcrun --sdk iphonesimulator --show-sdk-version
+      name: List Runtimes
+    - name: Prepare iOS simulator
+      id: prepareSimulator
+      uses: futureware-tech/simulator-action@v4
+      with:
+        model: "${{ matrix.deviceName }}"
+        os_version: "${{ matrix.iosVersion }}"
+        shutdown_after_job: false
+        wait_for_boot: true
+
+    - run: |
+        npm install -g appium
+        appium driver install xcuitest
+        nohup appium --port=$APPIUM_TEST_SERVER_PORT --address=$APPIUM_TEST_SERVER_HOST --log-timestamp --log-no-colors 2>&1 > appium.log &
+      name: Prepare the server
+
+    - run: |
+        appium driver run xcuitest download-wda-sim  --platform=ios --outdir=${{ github.workspace }}/wda
+      name: Downloading prebuilt WDA
+
+    - run: |
+        npm run build:web
+        npm run test:fixture &
+
+    - run: |
+        npm run test:node
+      name: Run functional tests
+      env:
+        OS_VERSION: "${{ matrix.iosVersion }}"
+        DEVICE_NAME: "${{ matrix.deviceName }}"
+
+    - name: Save server output
+      if: ${{ always() }}
+      uses: actions/upload-artifact@master
+      with:
+        name: appium log - Xcode ${{ matrix.xcodeVersion }}, OS version ${{ matrix.iosVersion }}
+        path: appium.log
