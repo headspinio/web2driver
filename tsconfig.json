@@ -6,7 +6,8 @@
         "allowJs": true,
         "target": "es6",
         "outDir": "node",
-        "inlineSourceMap": true
+        "inlineSourceMap": true,
+        "skipLibCheck": true,
     },
     "include": ["index.js", "src/**/*.js", "test/**/*.js"]
 }
