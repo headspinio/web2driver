@@ -61,7 +61,7 @@
     "util": "^0.12.5"
   },
   "dependencies": {
-    "@wdio/logger": "^7.7.0",
+    "@wdio/logger": "^9.18.0",
     "@wdio/protocols": "^7.7.4",
     "lodash": "^4.17.11",
     "process": "^0.11.10",
